@@ -12,11 +12,13 @@ import slick.driver.JdbcProfile
 class UserDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends HasDatabaseConfigProvider[JdbcProfile] {
   import driver.api._
 
-  private val User = TableQuery[UsersTable]
+  private val userModel = TableQuery[UsersTable]
 
-  def all(): Future[Seq[Users]] = db.run(User.result)
+  def all(): Future[Seq[Users]] = db.run(userModel.result)
 
-  def insert(user: Users): Future[Unit] = db.run(User += user).map { _ => () }
+  def findById(id: Long): Future[Option[Users]] = db.run(userModel.filter(_.id === id).result.headOption)
+
+  def insert(user: Users): Future[Unit] = db.run(userModel += user).map { _ => () }
 
   private class UsersTable(tag: Tag) extends Table[Users](tag, "USERS") {
 
