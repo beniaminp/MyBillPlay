@@ -23,7 +23,7 @@ class HomeController @Inject()(userDao: UserDao) extends Controller {
    * a path of `/`.
    */
   def index = Action.async {
-  	userDao.all().map {userList => Ok("user is: "+userList.head) }
+  	userDao.all().map {userList => Ok("user is: "+userList.head.username) }
     //Ok(views.html.index("Your new application is ready."))
   }
 
